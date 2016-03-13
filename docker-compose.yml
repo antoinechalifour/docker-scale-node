@@ -1,0 +1,20 @@
+api:
+  build: nodeapi
+  links:
+    - redis
+  volumes:
+    - ./nodeapi/www:/usr/src/app
+haproxy:
+  image: tutum/haproxy
+  links:
+    - api
+  environment:
+    - BACKEND_PORT=80
+redis:
+  image: redis
+nginx:
+  build: nginx
+  ports:
+    - "80:80"
+  links:
+    - haproxy
